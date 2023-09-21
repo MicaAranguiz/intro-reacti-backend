@@ -1,4 +1,6 @@
 const User = require('../models/user')
+const Post = require('../models/post')
+
 
 exports.getAllUsers = async (req, res) => {
 
@@ -16,6 +18,25 @@ exports.getAllUsers = async (req, res) => {
         })
     }
 }
+
+exports.getUserPosts = async(req, res)=>{
+    try {
+        const {id} = req.params
+        const user = await User.findAll({
+            where: {id: id},
+            include: {
+                model : Post
+            }
+        })
+        res.status(200).json({
+            msg: "posteos del usuario",
+            user
+        })} catch (error){
+        console.log(error)
+    }
+    
+}
+
 
 exports.createUser = async (req, res) => {
     try {
@@ -41,14 +62,14 @@ exports.updateUser = async (req, res) => {
 
     try {
 
-        const user = await User.findOne({id});
+        const user = await User.findOne({where: {id: id}});
 
         if(user){
             user.update({username, password, email})
         }
         else{
             res.status(404).json({
-                msg: "no existe usurio con ese id"
+                msg: "no existe usuario con ese id"
             })
         }
 

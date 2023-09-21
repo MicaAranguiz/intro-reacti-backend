@@ -31,8 +31,15 @@ User.init({
         modelName: 'User'
     });
 
-        User.hasMany(Post, { foreignKey: "userId", sourceKey: "id",})
-        Post.belongsTo(User, { foreignKey: "userId", tergetKey: "id", })
+    Post.belongsTo(User, {
+        foreignKey: 'userId', 
+       })
+       
+       User.hasMany(Post, {
+         foreignKey: 'userId'
+        })
+
+      
 
 User.sync()
     .then(() => {
